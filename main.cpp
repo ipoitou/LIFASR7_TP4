@@ -4,6 +4,7 @@
 #include <mutex>
 #include <condition_variable>
 #include <thread>
+#include <string>
 #include <sys/time.h>
 using namespace std;
 
@@ -38,8 +39,10 @@ void fct (int numThread, int nbTours, Barriere &b)
 {
     for (int i = 1; i<= nbTours; i++)
     {
+        cout << "thread " << numThread << " début tour " << i << endl;
         tache (numThread, i);
         b.attenteBarriere();
+        cout << "thread " << numThread << " fin tour " << i << endl;
     }
 }
 
@@ -57,7 +60,6 @@ int main()
     {
         // création des threads en appelant la fonction fct
         tab[i] = thread(fct, i, nbTours, ref(b));
-        // Comme les threads sont stockés dans un tableau, ils ne sont pas détruits
     }
 
   // on attend les threads

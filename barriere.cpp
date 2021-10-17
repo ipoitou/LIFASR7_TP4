@@ -1,4 +1,5 @@
 #include "barriere.h"
+#include <iostream>
 
 using namespace std;
 
@@ -15,12 +16,17 @@ void Barriere::attenteBarriere()
 {
     unique_lock<mutex> l(m);
     ++nbArrives;
-    if (nbArrives != nbThreads)
-        while (nbArrives != nbThreads)
-            cv.wait(l);
-    else 
+    while (nbArrives != nbThreads) 
     {
-        nbArrives = 0;
+        cv.wait(l);
+    }
+    
+    if(nbArrives == nbThreads)
+    {
         cv.notify_all();
     }
+
+    nbArrives=0;
+    
+    
 }
